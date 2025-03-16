@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@fontsource/prompt": "^5.2.5",
+    "@tanstack/table-core": "^8.21.2",
     "i": "^0.3.7"
   }
 }
