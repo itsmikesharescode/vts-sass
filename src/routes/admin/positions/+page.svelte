@@ -3,11 +3,11 @@
   import { columns } from './components/table/columns.js';
   import CreatePosition from './components/forms/create-position/create-position.svelte';
   import { initPositionRowState } from './components/table/row-state.svelte';
+  import EditPosition from './components/forms/edit-position/edit-position.svelte';
+  import DeletePosition from './components/forms/delete-position/delete-position.svelte';
 </script>
 
 <script lang="ts">
-  import EditPosition from './components/forms/edit-position/edit-position.svelte';
-
   const { data } = $props();
 
   const datas = [
@@ -26,3 +26,4 @@
 </main>
 
 <EditPosition editPositionForm={data.editPositionForm} />
+<DeletePosition deletePositionForm={data.deletePositionForm} />

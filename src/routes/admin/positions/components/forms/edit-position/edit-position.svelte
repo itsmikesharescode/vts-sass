@@ -32,6 +32,7 @@
         case 200:
           toast.success(data.msg);
           form.reset();
+          await goto('/admin/positions');
           break;
 
         case 401:
@@ -53,6 +54,10 @@
         $formData.id = activeRow.id;
         $formData.position_name = activeRow.position_name;
         $formData.position_info = activeRow.position_info;
+        return () => {
+          rowState.setActiveRow(null);
+          console.log('CLEANED');
+        };
       } else {
         //query the id to the database
       }

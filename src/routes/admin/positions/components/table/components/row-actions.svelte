@@ -34,7 +34,14 @@
       >
         Edit
       </DropdownMenu.Item>
-      <DropdownMenu.Item>Delete</DropdownMenu.Item>
+      <DropdownMenu.Item
+        onclick={() => {
+          rowState.setActiveRow(row.original);
+          rowState.delete = true;
+        }}
+      >
+        Delete
+      </DropdownMenu.Item>
     </DropdownMenu.Content>
   </DropdownMenu.Root>
 </div>
