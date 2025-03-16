@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import { cn } from '$lib/utils';
   import type { ClassNameValue } from 'tailwind-merge';
-  import LoaderCircle from 'lucide-svelte/icons/loader-circle';
+  import Loader from 'lucide-svelte/icons/loader';
 
   interface Props {
     isLoading: boolean;
@@ -17,6 +17,6 @@
   <div
     class={cn('absolute inset-0 flex items-center justify-center rounded-lg bg-primary', className)}
   >
-    <LoaderCircle class="animate-spin" />
+    <Loader class="animate-spin" />
   </div>
 {/if}
