@@ -6,6 +6,8 @@
 </script>
 
 <script lang="ts">
+  import EditPosition from './components/forms/edit-position/edit-position.svelte';
+
   const { data } = $props();
 
   const datas = [
@@ -22,3 +24,5 @@
   </section>
   <CTable {columns} data={datas} />
 </main>
+
+<EditPosition editPositionForm={data.editPositionForm} />

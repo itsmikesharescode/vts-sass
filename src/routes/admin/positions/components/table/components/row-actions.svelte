@@ -8,8 +8,11 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
   import Button from '$lib/components/ui/button/button.svelte';
   import type { PositionTable } from '../schema.js';
+  import { goto } from '$app/navigation';
+  import { usePositionRowState } from '../row-state.svelte';
 
   let { row }: { row: Row<PositionTable> } = $props();
+  const rowState = usePositionRowState();
 </script>
 
 <div class="flex justify-end">
@@ -23,7 +26,14 @@
       {/snippet}
     </DropdownMenu.Trigger>
     <DropdownMenu.Content class="w-[160px]" align="end">
-      <DropdownMenu.Item>Edit</DropdownMenu.Item>
+      <DropdownMenu.Item
+        onclick={async () => {
+          rowState.setActiveRow(row.original);
+          await goto(`/admin/positions?id=${row.original.id}`);
+        }}
+      >
+        Edit
+      </DropdownMenu.Item>
       <DropdownMenu.Item>Delete</DropdownMenu.Item>
     </DropdownMenu.Content>
   </DropdownMenu.Root>
