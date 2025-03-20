@@ -9,8 +9,9 @@
   import { toast } from 'svelte-sonner';
   import Loader from '$lib/components/general/spinners/loader/loader.svelte';
   import { buttonVariants } from '$lib/components/ui/button/index.js';
-  import { usePositionRowState } from '../../table/row-state.svelte';
+  import { useCandidateRowState } from '../../table/row-state.svelte';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+  import SelectPicker from '$lib/components/general/pickers/select-picker.svelte';
   interface Props {
     createCandidateForm: SuperValidated<Infer<CreateCandidateType>>;
   }
@@ -19,7 +20,7 @@
 <script lang="ts">
   let { createCandidateForm = $bindable() }: Props = $props();
 
-  const rowState = usePositionRowState();
+  const rowState = useCandidateRowState();
 
   const form = superForm(createCandidateForm, {
     validators: zodClient(createCandidateSchema),
@@ -93,6 +94,29 @@
             {#snippet children({ props })}
               <Form.Label>Last Name</Form.Label>
               <Input {...props} bind:value={$formData.last_name} placeholder="Last Name" />
+            {/snippet}
+          </Form.Control>
+
+          <Form.FieldErrors />
+        </Form.Field>
+
+        <Form.Field {form} name="gender">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Gender</Form.Label>
+              <SelectPicker
+                placeholder="Select a gender"
+                selections={[
+                  { id: 'male', label: 'Male', value: 'male' },
+                  { id: 'female', label: 'Female', value: 'female' }
+                ]}
+                bind:selectedId={$formData.gender}
+              >
+                {#snippet children({ selected })}
+                  <span>{selected.label}</span>
+                {/snippet}
+              </SelectPicker>
+              <input type="hidden" name={props.name} value={$formData.gender} />
             {/snippet}
           </Form.Control>
 

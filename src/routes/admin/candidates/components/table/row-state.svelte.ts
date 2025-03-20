@@ -1,12 +1,12 @@
 import { setContext, getContext } from 'svelte';
-import type { PositionTable } from './schema';
+import type { CandidateTable } from './schema';
 
 class RowState {
-  #activeRow = $state<PositionTable | null>(null);
+  #activeRow = $state<CandidateTable | null>(null);
   open = $state(false);
   delete = $state(false);
 
-  setActiveRow(row: PositionTable | null) {
+  setActiveRow(row: CandidateTable | null) {
     this.#activeRow = row;
   }
 
@@ -15,12 +15,12 @@ class RowState {
   }
 }
 
-const PRS_KEY = Symbol('positionRowState');
+const CRS_KEY = Symbol('candidateRowState');
 
-export const initPositionRowState = () => {
-  return setContext(PRS_KEY, new RowState());
+export const initCandidateRowState = () => {
+  return setContext(CRS_KEY, new RowState());
 };
 
-export const usePositionRowState = () => {
-  return getContext<ReturnType<typeof initPositionRowState>>(PRS_KEY);
+export const useCandidateRowState = () => {
+  return getContext<ReturnType<typeof initCandidateRowState>>(CRS_KEY);
 };

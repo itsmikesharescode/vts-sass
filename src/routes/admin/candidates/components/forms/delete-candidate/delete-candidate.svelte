@@ -1,26 +1,24 @@
 <script lang="ts" module>
   import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
   import * as Form from '$lib/components/ui/form/index.js';
-  import { Input } from '$lib/components/ui/input/index.js';
-  import { Textarea } from '$lib/components/ui/textarea/index.js';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-  import { deletePositionSchema, type DeletePositionType } from '../schema';
+  import { deleteCandidateSchema, type DeleteCandidateType } from '../schema';
   import { toast } from 'svelte-sonner';
   import Loader from '$lib/components/general/spinners/loader/loader.svelte';
-  import { usePositionRowState } from '../../table/row-state.svelte';
+  import { useCandidateRowState } from '../../table/row-state.svelte';
   interface Props {
-    deletePositionForm: SuperValidated<Infer<DeletePositionType>>;
+    deleteCandidateForm: SuperValidated<Infer<DeleteCandidateType>>;
   }
 </script>
 
 <script lang="ts">
-  let { deletePositionForm = $bindable() }: Props = $props();
+  let { deleteCandidateForm = $bindable() }: Props = $props();
 
-  const rowState = usePositionRowState();
+  const rowState = useCandidateRowState();
 
-  const form = superForm(deletePositionForm, {
-    validators: zodClient(deletePositionSchema),
+  const form = superForm(deleteCandidateForm, {
+    validators: zodClient(deleteCandidateSchema),
     id: crypto.randomUUID(),
     onUpdate: async ({ result }) => {
       const { status, data } = result;
@@ -43,8 +41,8 @@
   const { form: formData, enhance, submitting } = form;
 
   $effect(() => {
-    if (rowState.getActiveRow()) {
-      $formData.id = rowState.getActiveRow()?.id;
+    if (rowState.delete) {
+      $formData.id = rowState.getActiveRow()?.id as string;
     }
   });
 </script>
@@ -54,13 +52,14 @@
   onOpenChange={() => {
     form.reset();
     rowState.setActiveRow(null);
+    rowState.delete = false;
   }}
 >
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete Position</AlertDialog.Title>
+      <AlertDialog.Title>Delete Candidate</AlertDialog.Title>
       <AlertDialog.Description>
-        Are you sure you want to delete this position?
+        Are you sure you want to delete this candidate?
       </AlertDialog.Description>
     </AlertDialog.Header>
 
@@ -70,7 +69,7 @@
         <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
         <Form.Button disabled={$submitting} class="relative">
           <Loader isLoading={$submitting} />
-          Delete Position
+          Delete Candidate
         </Form.Button>
       </AlertDialog.Footer>
     </form>

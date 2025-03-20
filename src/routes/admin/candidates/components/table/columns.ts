@@ -1,17 +1,30 @@
 import type { ColumnDef } from '@tanstack/table-core';
 import { createRawSnippet } from 'svelte';
-import type { PositionTable } from './schema.js';
+import type { CandidateTable } from './schema.js';
 import ColumnHeader from '$lib/components/general/custom-table/components/column-header.svelte';
 import RowActions from './components/row-actions.svelte';
+import CandidateAvatar from './components/candidate-avatar.svelte';
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/index.js';
 
-export const columns: ColumnDef<PositionTable>[] = [
+export const columns: ColumnDef<CandidateTable>[] = [
+  {
+    accessorKey: 'avatar_path',
+    header: ({ column }) => {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
+        column,
+        title: 'Avatar'
+      });
+    },
+    cell: ({ row }) => renderComponent(CandidateAvatar<CandidateTable>, { row }),
+    enableSorting: false,
+    enableHiding: false
+  },
   {
     accessorKey: 'first_name',
     header: ({ column }) => {
-      return renderComponent(ColumnHeader<PositionTable, unknown>, {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
         column,
-        title: 'Position Name'
+        title: 'First Name'
       });
     },
     cell: ({ row }) => {
@@ -22,7 +35,7 @@ export const columns: ColumnDef<PositionTable>[] = [
         };
       });
 
-      return renderSnippet(positionNameSnippet, row.getValue('position_name'));
+      return renderSnippet(positionNameSnippet, row.getValue('first_name'));
     },
     enableSorting: false,
     enableHiding: false
@@ -31,7 +44,7 @@ export const columns: ColumnDef<PositionTable>[] = [
   {
     accessorKey: 'middle_name',
     header: ({ column }) => {
-      return renderComponent(ColumnHeader<PositionTable, unknown>, {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
         column,
         title: 'Middle Name'
       });
@@ -53,7 +66,7 @@ export const columns: ColumnDef<PositionTable>[] = [
   {
     accessorKey: 'last_name',
     header: ({ column }) => {
-      return renderComponent(ColumnHeader<PositionTable, unknown>, {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
         column,
         title: 'Last Name'
       });
@@ -73,9 +86,31 @@ export const columns: ColumnDef<PositionTable>[] = [
   },
 
   {
+    accessorKey: 'gender',
+    header: ({ column }) => {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
+        column,
+        title: 'Gender'
+      });
+    },
+    cell: ({ row }) => {
+      const positionNameSnippet = createRawSnippet<[string]>((getPositionName) => {
+        const positionName = getPositionName();
+        return {
+          render: () => `<div class="w-full">${positionName}</div>`
+        };
+      });
+
+      return renderSnippet(positionNameSnippet, row.getValue('gender'));
+    },
+    enableSorting: false,
+    enableHiding: false
+  },
+
+  {
     accessorKey: 'address',
     header: ({ column }) => {
-      return renderComponent(ColumnHeader<PositionTable, unknown>, {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
         column,
         title: 'Address'
       });
@@ -97,7 +132,7 @@ export const columns: ColumnDef<PositionTable>[] = [
   {
     accessorKey: 'motto',
     header: ({ column }) => {
-      return renderComponent(ColumnHeader<PositionTable, unknown>, {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
         column,
         title: 'Motto'
       });
@@ -118,14 +153,14 @@ export const columns: ColumnDef<PositionTable>[] = [
 
   {
     header: ({ column }) => {
-      return renderComponent(ColumnHeader<PositionTable, unknown>, {
+      return renderComponent(ColumnHeader<CandidateTable, unknown>, {
         column,
         title: 'Actions',
         class: 'justify-end flex'
       });
     },
     id: 'actions',
-    cell: ({ row }) => renderComponent(RowActions<PositionTable>, { row }),
+    cell: ({ row }) => renderComponent(RowActions<CandidateTable>, { row }),
     enableSorting: false,
     enableHiding: false
   }

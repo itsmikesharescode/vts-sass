@@ -7,12 +7,12 @@
   import type { Row } from '@tanstack/table-core';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
   import Button from '$lib/components/ui/button/button.svelte';
-  import type { PositionTable } from '../schema.js';
+  import type { CandidateTable } from '../schema.js';
   import { goto } from '$app/navigation';
-  import { usePositionRowState } from '../row-state.svelte';
+  import { useCandidateRowState } from '../row-state.svelte';
 
-  let { row }: { row: Row<PositionTable> } = $props();
-  const rowState = usePositionRowState();
+  let { row }: { row: Row<CandidateTable> } = $props();
+  const rowState = useCandidateRowState();
 </script>
 
 <div class="flex justify-end">
@@ -29,7 +29,7 @@
       <DropdownMenu.Item
         onclick={async () => {
           rowState.setActiveRow(row.original);
-          await goto(`/admin/positions?id=${row.original.id}`);
+          await goto(`/admin/candidates?id=${row.original.id}`);
         }}
       >
         Edit
