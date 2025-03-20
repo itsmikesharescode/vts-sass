@@ -12,6 +12,7 @@
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import SelectPicker from '$lib/components/general/pickers/select-picker.svelte';
+  import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
   interface Props {
     editCandidateForm: SuperValidated<Infer<EditCandidateType>>;
   }
@@ -77,99 +78,105 @@
     await goto('/admin/candidates');
   }}
 >
-  <AlertDialog.Content>
-    <AlertDialog.Header>
+  <AlertDialog.Content class="flex max-h-screen flex-col p-0">
+    <AlertDialog.Header class="p-6 pb-2">
       <AlertDialog.Title>Edit Candidate</AlertDialog.Title>
       <AlertDialog.Description>Fill the form below to edit a candidate.</AlertDialog.Description>
     </AlertDialog.Header>
+    <ScrollArea>
+      <form
+        method="POST"
+        action="?/editPositionEvent"
+        use:enhance
+        class="max-h-[calc(100vh-8rem)] px-6"
+      >
+        <input name="id" type="hidden" bind:value={$formData.id} />
+        <Form.Field {form} name="first_name">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>First Name</Form.Label>
+              <Input {...props} bind:value={$formData.first_name} placeholder="First Name" />
+            {/snippet}
+          </Form.Control>
 
-    <form method="POST" action="?/editPositionEvent" use:enhance>
-      <input name="id" type="hidden" bind:value={$formData.id} />
-      <Form.Field {form} name="first_name">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>First Name</Form.Label>
-            <Input {...props} bind:value={$formData.first_name} placeholder="First Name" />
-          {/snippet}
-        </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
 
-        <Form.FieldErrors />
-      </Form.Field>
+        <Form.Field {form} name="middle_name">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Middle Name</Form.Label>
+              <Input {...props} bind:value={$formData.middle_name} placeholder="Middle Name" />
+            {/snippet}
+          </Form.Control>
 
-      <Form.Field {form} name="middle_name">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>Middle Name</Form.Label>
-            <Input {...props} bind:value={$formData.middle_name} placeholder="Middle Name" />
-          {/snippet}
-        </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
 
-        <Form.FieldErrors />
-      </Form.Field>
+        <Form.Field {form} name="last_name">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Last Name</Form.Label>
+              <Input {...props} bind:value={$formData.last_name} placeholder="Last Name" />
+            {/snippet}
+          </Form.Control>
 
-      <Form.Field {form} name="last_name">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>Last Name</Form.Label>
-            <Input {...props} bind:value={$formData.last_name} placeholder="Last Name" />
-          {/snippet}
-        </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
 
-        <Form.FieldErrors />
-      </Form.Field>
+        <Form.Field {form} name="gender">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Gender</Form.Label>
+              <SelectPicker
+                {...props}
+                bind:selectedId={$formData.gender}
+                placeholder="Gender"
+                selections={[
+                  { id: 'male', label: 'Male', value: 'male' },
+                  { id: 'female', label: 'Female', value: 'female' }
+                ]}
+              >
+                {#snippet children({ selected })}
+                  <span>{selected.label}</span>
+                {/snippet}
+              </SelectPicker>
+            {/snippet}
+          </Form.Control>
 
-      <Form.Field {form} name="gender">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>Gender</Form.Label>
-            <SelectPicker
-              {...props}
-              bind:selectedId={$formData.gender}
-              placeholder="Gender"
-              selections={[
-                { id: 'male', label: 'Male', value: 'male' },
-                { id: 'female', label: 'Female', value: 'female' }
-              ]}
-            >
-              {#snippet children({ selected })}
-                <span>{selected.label}</span>
-              {/snippet}
-            </SelectPicker>
-          {/snippet}
-        </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
 
-        <Form.FieldErrors />
-      </Form.Field>
+        <Form.Field {form} name="address">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Address</Form.Label>
+              <Input {...props} bind:value={$formData.address} placeholder="Address" />
+            {/snippet}
+          </Form.Control>
 
-      <Form.Field {form} name="address">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>Address</Form.Label>
-            <Input {...props} bind:value={$formData.address} placeholder="Address" />
-          {/snippet}
-        </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
 
-        <Form.FieldErrors />
-      </Form.Field>
+        <Form.Field {form} name="motto">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Motto</Form.Label>
+              <Textarea {...props} bind:value={$formData.motto} placeholder="Motto" />
+            {/snippet}
+          </Form.Control>
 
-      <Form.Field {form} name="motto">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>Motto</Form.Label>
-            <Textarea {...props} bind:value={$formData.motto} placeholder="Motto" />
-          {/snippet}
-        </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
 
-        <Form.FieldErrors />
-      </Form.Field>
-
-      <AlertDialog.Footer>
-        <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
-        <Form.Button disabled={$submitting} class="relative">
-          <Loader isLoading={$submitting} />
-          Edit Candidate
-        </Form.Button>
-      </AlertDialog.Footer>
-    </form>
+        <AlertDialog.Footer class="pb-6 pt-2">
+          <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+          <Form.Button disabled={$submitting} class="relative">
+            <Loader isLoading={$submitting} />
+            Edit Candidate
+          </Form.Button>
+        </AlertDialog.Footer>
+      </form>
+    </ScrollArea>
   </AlertDialog.Content>
 </AlertDialog.Root>
